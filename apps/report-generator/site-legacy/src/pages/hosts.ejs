@@ -1,0 +1,8 @@
+<h1 class="subtitle has-text-grey scan-heading">Sub-domains found using crt.sh logs</h1>
+
+<h2 class="subtitle is-uppercase">Total Hosts Found - <%= site.hosts.length %></h2>
+<div class="list is-hoverable">
+  <% site.hosts.forEach((host) => { %>
+    <a class="list-item"><%= host %></a>
+  <% }) %>
+</div>

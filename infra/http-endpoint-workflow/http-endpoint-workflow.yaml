@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-endpoint-detection
+  labels:
+    app: http-endpoint-detection
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-endpoint-detection
+  template:
+    metadata:
+      labels:
+        app: http-endpoint-detection
+    spec:
+      containers:
+      - name: curl-ctr
+        imagePullPolicy: Always
+        image: appsecco/splat-workshop-shell-tools
+        command: ["/usr/bin/splat-sidecar"]
+        env:
+          - name: SPLAT_MINIO_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_ENDPOINT
+          - name: SPLAT_MINIO_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_ACCESS_KEY
+          - name: SPLAT_MINIO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_SECRET_KEY
+          - name: MINIO_OUTPUT_BUCKET
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: MINIO_OUTPUT_BUCKET
+          - name: SPLAT_NATS_URL
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_NATS_URL
+          - name: SPLAT_MINIO_FILE_PATTERN
+            value: scans/{{SCAN_ID}}/{{OUTPUT_EVENT}}/data.txt
+          - name: SPLAT_MINIO_EVENT_NAME
+            value: http-endpoints
+          - name: SPLAT_NATS_CONSUMER_TOPIC
+            value: nmap-input
+          - name: SPLAT_EXEC_TIMEOUT
+            value: "500"
+          - name: SPLAT_MINIO_CAPTURE_STDOUT
+            value: "yes"
+          - name: SPLAT_EXEC_PATTERN
+            value: "CURL_OPTIONS=\"--connect-timeout 3 --max-time 10\"; TARGETS=\"{{TARGET}}\"; for x in $TARGETS; do curl $CURL_OPTIONS -I http://$x > /dev/null 2>&1 && echo http://$x; curl $CURL_OPTIONS -I https://$x > /dev/null 2>&1 && echo https://$x; done; exit 0;"

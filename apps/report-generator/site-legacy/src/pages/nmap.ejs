@@ -1,0 +1,32 @@
+<h1 class="subtitle has-text-grey scan-heading">Nmap Results</h1>
+    <% nmap = JSON.parse(site.nmap) %>
+
+    <!-- <h3>Command</h3>
+    <pre><%= nmap.nmaprun.args %></pre> -->
+
+    <h2 class="subtitle">Hosts</h2>
+    <% hosts = nmap.nmaprun.host || [] %>
+    <% hosts.forEach((host) => { %>
+        <h4><%= host.address.addr %></h4>
+        <ul>
+            <% hostnames = host.hostnames || {} %>
+            <% hns = hostnames.hostname || [] %>
+	    <% hns = hns.forEach ? hns : [hns] %>
+            <% hns.forEach((hname) => {%> 
+                <li><%= hname.name %></li>
+            <% }) %>
+        </ul>
+        <h5>Ports</h5>
+        <!-- <pre><%= JSON.stringify(host.ports, null, 2) %></pre> -->
+        <% ports = host.ports %>
+        <% ports = ports ? ports.port : [] %>
+        <ul>
+        <% (ports || []).forEach((port) => { %>
+            <li>[<%= port.protocol %>] <%= port.portid %> [<%= port.state.state %>] [<%= port.service.name %>]</li>
+        <% }) %>
+        </ul>
+    <% }) %>
+
+    <!-- <h3>JSON Output</h3>
+    <pre><%- JSON.stringify(site.nmap,null,4) %></pre> -->
+

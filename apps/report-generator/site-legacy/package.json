@@ -1,0 +1,27 @@
+{
+  "name": "nanogen",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node ./scripts/build",
+    "build:prod": "cross-env NODE_ENV=production node ./scripts/build",
+    "serve": "serve ./public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "xml2json": "^0.11.2"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.4",
+    "ejs": "^2.5.9",
+    "front-matter": "^2.3.0",
+    "fs-extra": "^5.0.0",
+    "glob": "^7.1.2",
+    "marked": "^0.3.19",
+    "prettier": "^1.12.1",
+    "serve": "^6.5.6"
+  }
+}

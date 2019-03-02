@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+
+<body>
+  <section class="page-header">
+    <h1 class="project-name">
+      <!-- <%= site.title %> -->
+      <img src="assets/images/splat-logo-blue.png" alt="SPLAT Workshop | nullcon X" />
+    </h1>
+    <h2 class="project-tagline">
+      <%= site.description %>
+    </h2>
+    <!-- <a href="<%= site.basePath %>/" class="btn">Home</a> -->
+    <a href="zap.html" class="btn  is-large">ZAP Result</a>
+    <a href="hosts.html" class="btn  is-large">Web Hosts</a>
+    <a href="nmap.html" class="btn  is-large">nmap Scans</a>
+    <!-- <a href="<%= site.basePath %>/html-page" class="btn">HTML Page</a> -->
+    <!-- <a href="https://github.com/appsecco/using-docker-kubernetes-for-automating-appsec-and-osint-workflows" class="btn  is-large">GitHub</a> -->
+  </section>
+
+  <section class="main-content">
+    <%- body %>
+  </section>
+  <section class="hero is-primary footer site-footer">
+    
+      <%- include('../partials/foot') %>
+    
+  </section>
+</body>
+
+</html>
