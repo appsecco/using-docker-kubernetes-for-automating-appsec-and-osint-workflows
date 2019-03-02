@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-gen-workflow
+  labels:
+    app: report-gen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: report-gen
+  template:
+    metadata:
+      labels:
+        app: report-gen
+    spec:
+      containers:
+      - name: report-gen-ctr
+        imagePullPolicy: Always
+        image: appsecco/splat-workshop-report-generator
+        command: ["./splat-sidecar"]
+        volumeMounts:
+            - name: googlesatoken
+              mountPath: "/opt/secret/"
+              readOnly: true
+        env:
+          - name: GOOGLE_STORAGE_BUCKET_BASE_URI
+            value: gs://splat-reports/reports
+          - name: SPLAT_MINIO_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_ENDPOINT
+          - name: SPLAT_MINIO_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_ACCESS_KEY
+          - name: SPLAT_MINIO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_SECRET_KEY
+          - name: MINIO_OUTPUT_BUCKET
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: MINIO_OUTPUT_BUCKET
+          - name: SPLAT_NATS_URL
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_NATS_URL
+          - name: SPLAT_MINIO_FILE_PATTERN
+            value: scans/{{SCAN_ID}}/{{OUTPUT_EVENT}}/site-{{TIMESTAMP}}.tar.gz
+          - name: SPLAT_MINIO_EVENT_NAME
+            value: report-gen 
+          - name: SPLAT_NATS_CONSUMER_TOPIC
+            value: report-gen-input
+          - name: SPLAT_QUEUE_GROUP_NAME
+            value: report-gen-tool
+          - name: SPLAT_EXEC_PATTERN
+            value: "./handler.sh {{TARGET}} {{OUTPUT_FILE_PATH}}"
+      volumes:
+        - name: googlesatoken
+          secret:
+            secretName: googlesatoken

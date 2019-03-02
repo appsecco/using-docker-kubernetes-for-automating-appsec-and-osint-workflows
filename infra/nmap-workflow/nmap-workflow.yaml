@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nmap-workflow
+  labels:
+    app: nmap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nmap
+  template:
+    metadata:
+      labels:
+        app: nmap
+    spec:
+      containers:
+      - name: nmap-ctr
+        imagePullPolicy: Always
+        image: appsecco/splat-workshop-nmap
+        command: ["/usr/bin/splat-sidecar"]
+        env:
+          - name: SPLAT_MINIO_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_ENDPOINT
+          - name: SPLAT_MINIO_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_ACCESS_KEY
+          - name: SPLAT_MINIO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_MINIO_SECRET_KEY
+          - name: MINIO_OUTPUT_BUCKET
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: MINIO_OUTPUT_BUCKET
+          - name: SPLAT_NATS_URL
+            valueFrom:
+              secretKeyRef:
+                  name: common-env-secrets
+                  key: SPLAT_NATS_URL
+          - name: SPLAT_MINIO_FILE_PATTERN
+            value: scans/{{SCAN_ID}}/{{OUTPUT_EVENT}}/data.xml
+          - name: SPLAT_MINIO_EVENT_NAME
+            value: nmap 
+          - name: SPLAT_NATS_CONSUMER_TOPIC
+            value: nmap-input
+          - name: SPLAT_EXEC_TIMEOUT
+            value: "1000"
+          - name: SPLAT_EXEC_PATTERN
+            value: "nmap --host-timeout 10 -Pn --open --webxml --top-ports 100 -oX {{OUTPUT_FILE_PATH}} {{TARGET}}"

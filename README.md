@@ -2,6 +2,24 @@
 
 ![SPLAT](images/splat-logo.png)
 
-## Material
+## Getting Started
 
-_We will update this repository on 2nd of March 2019_
+Clone this repository
+
+```
+git clone https://github.com/appsecco/using-docker-kubernetes-for-automating-appsec-and-osint-workflows
+```
+
+Install `gitbook-cli` for serving documentation locally
+
+```
+npm install -g gitbook-cli
+```
+
+Start `gitbook` server locally
+
+```
+cd using-docker-kubernetes-for-automating-appsec-and-osint-workflows/gitbook
+gitbook serve
+```
+

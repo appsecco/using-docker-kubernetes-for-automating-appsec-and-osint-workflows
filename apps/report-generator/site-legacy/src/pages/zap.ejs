@@ -1,0 +1,26 @@
+<h1 class="subtitle has-text-grey scan-heading">OWASP ZAP Scan Result</h1>
+
+
+<div class="column">
+<% Object.keys(site.zapScans).forEach((scanKey) => { %>
+  <% zap = site.zapScans[scanKey] %>
+    
+  <h2 class="subtitle"><%= zap.site["@name"] %></h2>
+
+  <% if (! zap.site.alerts) { %>
+    <h2 class="subtitle is-uppercase">No result found</h2>
+    <% return %>
+  <% } %>
+
+  <h4>Alerts</h4>
+  <!-- <pre><%= JSON.stringify(zap, null, 2) %></pre> -->
+  <!-- <%= JSON.stringify(zap.site.alerts) %> -->
+  <div class="list is-hoverable">
+  <% zap.site.alerts.forEach((a) => { %>
+    <a class="list-item">[<%= a.pluginid %>] <%= a.name %></a>
+  <% }) %>
+  </div>
+
+<% }) %>
+
+</div>
