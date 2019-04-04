@@ -23,18 +23,7 @@
 * [Configure Minio Service](apps-setup/configure-minio-service.md)
 * [Deploy Reporting Workflow](apps-setup/deploy-reporting-workflow.md)
 
-## Reporting Website
-
-* [Provision Compute](reporting/provision-compute.md)
-* [Install Nginx](reporting/install-nginx.md)
-* [Deploy OAuth2 Integration](reporting/deploy-oauth2-integration.md)
-* [Deploy NodeJS Environment](reporting/deploy-nodejs-environment.md)
-* [Activate Google Service Account](reporting/activate-google-service-account.md)
-* [Deploy Worker Script - Running script with cron periodically](reporting/deploy-worker-script.md)
-
 ## Execution
 
 * [Submit Scan Request](execution/submit-scan-request.md)
-* [Monitor Scan Results](execution/monitor-scan-results.md)
 * [Submit Reporting Request](execution/submit-reporting-request.md)
-* [View Report](execution/view-report.md)
